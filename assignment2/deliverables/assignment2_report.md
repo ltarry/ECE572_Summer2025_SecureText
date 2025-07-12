@@ -397,7 +397,7 @@ print(auth_url)
 
 redirect_response = input("After logging in, paste the full redirect URL here: ").strip()
 
-client_secret = "821ba2e2fba93c6b3825a7045580d141f6e8942a"
+client_secret = "GITHUB_CLIENT_SECRET"
 token_url = "https://github.com/login/oauth/access_token"
 headers = {"Accept": "application/json"}
 data = {
@@ -439,8 +439,11 @@ def github_login(self):
         """Login using GitHub OAuth"""
         #Hardcoded GitHub OAuth Credentials for our demo environment.
         self.logout()  # Ensure any previous session is cleared
-        client_id = "Ov23liKAGQ5DVCq4cMlJ"
-        client_secret = "821ba2e2fba93c6b3825a7045580d141f6e8942a"
+        client_id = os.environ.get("GITHUB_CLIENT_ID")
+        client_secret = os.environ.get("GITHUB_CLIENT_SECRET")
+        if not client_id or not client_secret:
+            print("Error: GitHub OAuth client ID/secret not set in environment variables.")
+            return
         redirect_uri = "http://localhost"
         state = secrets.token_urlsafe(16)
         scope = "read:user user:email"
@@ -745,7 +748,11 @@ def logout(self):
 
 #### 2.2.6 Provider Configuration
 
-When starting server, select option 3 to prompt a firefox browser pop-up, a URL is given if pop-up does not occur. Login with github account credentials and paste redirect URI to console. Once shown in assignment test, best practice is to logout from github to clear cache and nano users.json to remove username/ email from file. 
+Before starting the server, in your terminal run:
+export GITHUB_CLIENT_ID="Ov23liKAGQ5DVCq4cMlJ"
+export GITHUB_CLIENT_SECRET="client secret submitted on brightspace"
+
+Now, when starting server, select option 3 to prompt a firefox browser pop-up, a URL is given if pop-up does not occur. Login with github account credentials and paste redirect URI to console. Once shown in assignment test, best practice is to logout from github to clear cache and nano users.json to remove username/ email from file. 
 
 #### 2.2.6 Testing and Validation
 <!-- How did you test that your implementation works correctly? -->

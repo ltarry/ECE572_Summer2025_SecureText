@@ -564,8 +564,11 @@ class SecureTextClient:
         """Login using GitHub OAuth"""
         #Hardcoded GitHub 0Auth Credentials for our demo environment.
         self.logout()  # Ensure any previous session is cleared
-        client_id = "Ov23liKAGQ5DVCq4cMlJ"
-        client_secret = "821ba2e2fba93c6b3825a7045580d141f6e8942a"
+        client_id = os.environ.get("GITHUB_CLIENT_ID")
+        client_secret = os.environ.get("GITHUB_CLIENT_SECRET")
+        if not client_id or not client_secret:
+            print("Error: GitHub OAuth client ID/secret not set in environment variables.")
+            return
         redirect_uri = "http://localhost"
         state = secrets.token_urlsafe(16)
         scope = "read:user user:email"
